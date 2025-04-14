@@ -7,4 +7,6 @@ import java.util.Map;
 public interface BaseEntity<ID> {
     ID getId();
     void setId(ID id);
+
+    Map<String, Object> toInsertMap();
 }

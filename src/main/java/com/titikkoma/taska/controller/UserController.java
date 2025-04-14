@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/users")
 public class UserController {
     UserService userService;
 
@@ -19,14 +18,14 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/test")
+    @GetMapping("/v1/users/test")
     public WebResponse<Optional<User>> findById() {
         System.out.println("test");
         Optional<User> user =  userService.findById();
         return WebResponse.<Optional<User>>builder().data(user).build();
     }
 
-    @GetMapping("/list")
+    @GetMapping("/v1/users")
     public WebResponse<List<User>> findAll() {
         System.out.println("list");
         List<User> users = userService.findAllUsers();

@@ -4,7 +4,11 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -83,26 +87,26 @@ public class BaseRepository<T extends BaseEntity<ID>, ID> {
         return entity.orElse(null);
     }
 
-//    @Transactional
-//    public T create(T entity) {
-//        String insertColumns = String.join(", ", entity.getInsertColumns());
-//        String values = entity.getInsertColumns().stream()
-//                .map(col -> ":" + col)
-//                .collect(Collectors.joining(", "));
-//
-//        String sql = String.format("INSERT INTO %s (%s) VALUES (%s)",
-//                tableName, insertColumns, values);
-//
-//        KeyHolder keyHolder = new GeneratedKeyHolder();
-//        SqlParameterSource params = new BeanPropertySqlParameterSource(entity);
-//
-//        namedJdbcTemplate.update(sql, params, keyHolder);
-//
-//        if (keyHolder.getKey() != null) {
-//            entity.setId((ID) keyHolder.getKey().longValue());
-//        }
-//        return entity;
-//    }
+    @Transactional
+    public T create(T entity) {
+        Map<String, Object> insertValues = entity.toInsertMap();
+        List<String> columns = new ArrayList<>(insertValues.keySet());
+
+        String insertColumns = String.join(", ", columns);
+        String valuesPlaceholder = columns.stream()
+                .map(col -> ":" + col)
+                .collect(Collectors.joining(", "));
+
+        String sql = String.format("INSERT INTO %s (%s) VALUES (%s)",
+                tableName, insertColumns, valuesPlaceholder);
+
+        SqlParameterSource params = new MapSqlParameterSource(insertValues);
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        namedJdbcTemplate.update(sql, params, keyHolder, new String[]{"id"});
+
+        return entity;
+    }
 
     @Transactional
     public int update(Map<String, Object> conditions, Map<String, Object> updates) {
