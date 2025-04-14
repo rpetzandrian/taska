@@ -30,8 +30,6 @@ public class AuthService{
     public LoginResponse login(String email, String password) {
         Optional<User> user = userRepository.findByEmail(email);
 
-        System.out.println(user.get().getPassword());
-
         if (user.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid email or password");
         }
