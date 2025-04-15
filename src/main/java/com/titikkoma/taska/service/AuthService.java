@@ -43,8 +43,9 @@ public class AuthService{
 
         Timestamp expiredAt = new Timestamp(Instant.now().plus(3600, ChronoUnit.SECONDS).toEpochMilli());
 
+        String token = UUID.randomUUID().toString();
         User updateUserPayload = new User();
-        updateUserPayload.setToken(UUID.randomUUID().toString());
+        updateUserPayload.setToken(token);
         updateUserPayload.setExpired_at(expiredAt);
 
         Map<String, Object> conditions = new HashMap<>();
@@ -52,7 +53,7 @@ public class AuthService{
         userRepository.update(conditions, updateUserPayload.toInsertMap());
 
         return LoginResponse.builder()
-                .token(UUID.randomUUID().toString())
+                .token(token)
                 .expired_at(expiredAt.toString())
                 .lifetime(3600)
                 .build();
@@ -80,12 +81,10 @@ public class AuthService{
         user.setToken(token);
         user.setExpired_at(expiredAt);
 
-        System.out.println(expiredAt);
-
         userRepository.create(user);
 
         return LoginResponse.builder()
-                .token(UUID.randomUUID().toString())
+                .token(token)
                 .expired_at(expiredAt.toString())
                 .lifetime(3600)
                 .build();

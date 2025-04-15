@@ -86,7 +86,7 @@ public class User implements BaseEntity<String> {
         Map<String, Object> map = new HashMap<>();
 
         User user = this;
-        map.put("id", user.getId());
+        if (user.getId() != null) map.put("id", user.getId());
         if (user.getName() != null) map.put("name", user.getName());
         if (user.getEmail() != null) map.put("email", user.getEmail());
         if (user.getPassword() != null) map.put("password", user.getPassword());

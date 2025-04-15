@@ -119,6 +119,8 @@ public class BaseRepository<T extends BaseEntity<ID>, ID> {
         String sql = String.format("UPDATE %s SET %s WHERE %s",
                 tableName, setClause, whereClause);
 
+        System.out.println(sql);
+
         Map<String, Object> params = new HashMap<>();
         params.putAll(conditions);
         params.putAll(updates);
