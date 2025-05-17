@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.titikkoma.taska.entity.Organization;
+import com.titikkoma.taska.model.Organization;
 import com.titikkoma.taska.repository.OrganizationRepository;
 
 @Service

@@ -1,4 +1,4 @@
-package com.titikkoma.taska.entity;
+package com.titikkoma.taska.model;
 
 import com.titikkoma.taska.base.BaseEntity;
 
@@ -10,7 +10,7 @@ public class Task implements BaseEntity<String> {
     private String description;
     private String status;
     private Integer priority;
-    private Integer story_points;
+    private Integer story_point;
     private String reporter_id;
     private String assignee_id;
     private String type;
@@ -57,12 +57,12 @@ public class Task implements BaseEntity<String> {
         this.priority = priority;
     }
 
-    public Integer getStory_points() {
-        return story_points;
+    public Integer getStory_point() {
+        return story_point;
     }
 
-    public void setStory_points(Integer story_points) {
-        this.story_points = story_points;
+    public void setStory_point(Integer story_point) {
+        this.story_point = story_point;
     }
 
     public String getReporter_id() {

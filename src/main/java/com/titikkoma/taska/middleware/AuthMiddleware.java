@@ -1,6 +1,6 @@
 package com.titikkoma.taska.middleware;
 
-import com.titikkoma.taska.entity.User;
+import com.titikkoma.taska.model.User;
 import com.titikkoma.taska.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,7 +13,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class AuthMiddleware implements HandlerInterceptor {

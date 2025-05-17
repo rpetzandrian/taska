@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.titikkoma.taska.base.WebResponse;
-import com.titikkoma.taska.entity.Organization;
+import com.titikkoma.taska.model.Organization;
 import com.titikkoma.taska.service.OrganizationService;
 
 @RestController

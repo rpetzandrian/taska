@@ -1,4 +1,4 @@
-package com.titikkoma.taska.entity;
+package com.titikkoma.taska.model;
 
 import com.titikkoma.taska.base.BaseEntity;
 

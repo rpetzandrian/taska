@@ -1,7 +1,7 @@
 package com.titikkoma.taska.repository;
 
 import com.titikkoma.taska.base.BaseRepository;
-import com.titikkoma.taska.entity.Log;
+import com.titikkoma.taska.model.Log;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -23,7 +23,6 @@ public class LogRepository extends BaseRepository<Log, String> {
             log.setId(rs.getString("id"));
             log.setAction(rs.getString("action"));
             log.setDate(rs.getString("date"));
-            log.setBy(rs.getString("by"));
             log.setType(rs.getString("type"));
             return log;
         }

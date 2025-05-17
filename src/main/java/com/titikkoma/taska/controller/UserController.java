@@ -1,10 +1,9 @@
 package com.titikkoma.taska.controller;
 
 import com.titikkoma.taska.base.WebResponse;
-import com.titikkoma.taska.entity.User;
+import com.titikkoma.taska.model.User;
 import com.titikkoma.taska.service.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
