@@ -28,6 +28,7 @@ public class UserRepository extends BaseRepository<User, String> {
             user.setRole(rs.getString("role"));
             user.setToken(rs.getString("token"));
             user.setExpired_at(rs.getTimestamp("expired_at"));
+            user.setOrganization_code(rs.getString("organization_code"));
             return user;
         }
     }
