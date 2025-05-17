@@ -2,10 +2,13 @@ package com.titikkoma.taska.entity;
 
 import com.titikkoma.taska.base.BaseEntity;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class Organization implements BaseEntity<String> {
     private String id;
+    private String code;
     private String name;
     private String description;
 
@@ -17,6 +20,14 @@ public class Organization implements BaseEntity<String> {
     @Override
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getCode(){
+        return code;
+    }
+
+    public void setCode(String code){
+        this.code = code;
     }
 
     public String getName() {
@@ -37,6 +48,13 @@ public class Organization implements BaseEntity<String> {
 
     @Override
     public Map<String, Object> toInsertMap() {
-        return Map.of();
+        Map<String, Object> map = new HashMap<>();
+        if (id == null) {
+            id = UUID.randomUUID().toString();
+        }
+        map.put("id", id);
+        if (code != null) map.put("code", code);
+        if (name != null) map.put("name", name);
+        return map;
     }
 }
