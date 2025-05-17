@@ -16,6 +16,6 @@ class Config implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authMiddleware)
-                .excludePathPatterns("/v1/auth/*");
+                .excludePathPatterns("/v1/auth/*", "/v1/logs/*");
     }
 }
