@@ -97,7 +97,7 @@ public class BaseRepository<T extends BaseEntity<ID>, ID> {
                 .map(col -> ":" + col)
                 .collect(Collectors.joining(", "));
 
-        String sql = String.format("INSERT INTO %s (%s) VALUES (%s)",
+        String sql = String.format("INSERT INTO %s (%s) VALUES (%s)",   
                 tableName, insertColumns, valuesPlaceholder);
 
         SqlParameterSource params = new MapSqlParameterSource(insertValues);

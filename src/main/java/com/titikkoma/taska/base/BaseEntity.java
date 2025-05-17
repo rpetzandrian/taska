@@ -1,6 +1,5 @@
 package com.titikkoma.taska.base;
 
-import java.util.List;
 import java.util.Map;
 
 // Base Entity Interface
