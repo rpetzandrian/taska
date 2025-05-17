@@ -1,7 +1,7 @@
 package com.titikkoma.taska.repository;
 
 import com.titikkoma.taska.base.BaseRepository;
-import com.titikkoma.taska.entity.User;
+import com.titikkoma.taska.model.User;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;

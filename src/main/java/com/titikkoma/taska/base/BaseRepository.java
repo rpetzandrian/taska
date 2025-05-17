@@ -41,11 +41,13 @@ public class BaseRepository<T extends BaseEntity<ID>, ID> {
                 .collect(Collectors.joining(" AND "));
 
         if (!whereClause.isEmpty()) {
-            sql += "WHERE" + whereClause;
+            sql += " WHERE " + whereClause;
         }
 
+        System.out.println(sql);
+
         try {
-            return jdbcTemplate.query(sql, rowMapper);
+            return namedJdbcTemplate.query(sql, conditions, rowMapper);
         } catch (EmptyResultDataAccessException e) {
             return new ArrayList<>();
         }

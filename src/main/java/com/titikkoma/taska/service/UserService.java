@@ -1,10 +1,8 @@
 package com.titikkoma.taska.service;
 
-import com.titikkoma.taska.entity.User;
+import com.titikkoma.taska.model.User;
 import com.titikkoma.taska.repository.UserRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
 import java.util.List;
