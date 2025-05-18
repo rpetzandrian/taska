@@ -23,8 +23,8 @@ public class SprintRepository extends BaseRepository<Sprint, String> {
             sprint.setName(rs.getString("name"));
             sprint.setDescription(rs.getString("description"));
             sprint.setStatus(rs.getString("status"));
-            sprint.setStart_date(rs.getDate("start_date"));
-            sprint.setEnd_date(rs.getDate("end_date"));
+            sprint.setStart_date(rs.getTimestamp("start_date"));
+            sprint.setEnd_date(rs.getTimestamp("end_date"));
             sprint.setCreated_by(rs.getString("created_by"));
             sprint.setOrganization_code(rs.getString("organization_code"));
 
