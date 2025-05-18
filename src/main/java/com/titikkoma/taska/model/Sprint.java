@@ -12,6 +12,8 @@ public class Sprint implements BaseEntity<String> {
     private Date start_date;
     private Date end_date;
     private String status;
+    private String organization_code;
+    private String created_by;
 
     @Override
     public String getId() {
@@ -62,6 +64,14 @@ public class Sprint implements BaseEntity<String> {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public String getOrganization_code() { return organization_code; }
+
+    public void setOrganization_code(String organization_code) { this.organization_code = organization_code; }
+
+    public String getCreated_by() { return created_by; }
+
+    public void setCreated_by(String created_by) { this.created_by = created_by; }
 
     @Override
     public Map<String, Object> toInsertMap() {
