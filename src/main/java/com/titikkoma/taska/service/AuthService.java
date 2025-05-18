@@ -3,16 +3,14 @@ package com.titikkoma.taska.service;
 import com.titikkoma.taska.base.helpers.BCrypt;
 import com.titikkoma.taska.dto.LoginResponse;
 import com.titikkoma.taska.dto.RegisterRequestBody;
-import com.titikkoma.taska.entity.User;
+import com.titikkoma.taska.model.User;
 import com.titikkoma.taska.repository.UserRepository;
-import org.hibernate.query.sqm.TemporalUnit;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;

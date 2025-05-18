@@ -41,11 +41,13 @@ public class BaseRepository<T extends BaseEntity<ID>, ID> {
                 .collect(Collectors.joining(" AND "));
 
         if (!whereClause.isEmpty()) {
-            sql += "WHERE" + whereClause;
+            sql += " WHERE " + whereClause;
         }
 
+        System.out.println(sql);
+
         try {
-            return jdbcTemplate.query(sql, rowMapper);
+            return namedJdbcTemplate.query(sql, conditions, rowMapper);
         } catch (EmptyResultDataAccessException e) {
             return new ArrayList<>();
         }
@@ -97,7 +99,7 @@ public class BaseRepository<T extends BaseEntity<ID>, ID> {
                 .map(col -> ":" + col)
                 .collect(Collectors.joining(", "));
 
-        String sql = String.format("INSERT INTO %s (%s) VALUES (%s)",   
+        String sql = String.format("INSERT INTO %s (%s) VALUES (%s)",
                 tableName, insertColumns, valuesPlaceholder);
 
         SqlParameterSource params = new MapSqlParameterSource(insertValues);

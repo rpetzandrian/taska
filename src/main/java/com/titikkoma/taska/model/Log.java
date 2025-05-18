@@ -1,4 +1,4 @@
-package com.titikkoma.taska.entity;
+package com.titikkoma.taska.model;
 
 import com.titikkoma.taska.base.BaseEntity;
 
@@ -9,7 +9,8 @@ public class Log implements BaseEntity<String> {
     private String action;
     private String date;
     private String type;
-    private String by;
+    private String reference_id;
+    private Object content;
 
     public String getId() {
         return id;
@@ -43,13 +44,13 @@ public class Log implements BaseEntity<String> {
         this.type = type;
     }
 
-    public String getBy() {
-        return by;
-    }
+    public String getReference_id() { return reference_id; }
 
-    public void setBy(String by) {
-        this.by = by;
-    }
+    public void setReference_id(String reference_id) { this.reference_id = reference_id; }
+
+    public Object getContent() { return content; }
+
+    public void setContent(Object content) { this.content = content; }
 
     @Override
     public Map<String, Object> toInsertMap() {

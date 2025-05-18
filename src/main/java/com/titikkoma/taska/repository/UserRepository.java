@@ -1,7 +1,7 @@
 package com.titikkoma.taska.repository;
 
 import com.titikkoma.taska.base.BaseRepository;
-import com.titikkoma.taska.entity.User;
+import com.titikkoma.taska.model.User;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -28,6 +28,7 @@ public class UserRepository extends BaseRepository<User, String> {
             user.setRole(rs.getString("role"));
             user.setToken(rs.getString("token"));
             user.setExpired_at(rs.getTimestamp("expired_at"));
+            user.setOrganization_code(rs.getString("organization_code"));
             return user;
         }
     }

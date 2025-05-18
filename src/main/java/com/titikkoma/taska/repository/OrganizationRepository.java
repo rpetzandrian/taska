@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.titikkoma.taska.base.BaseRepository;
-import com.titikkoma.taska.entity.Organization;
+import com.titikkoma.taska.model.Organization;
 
 @Repository
 public class OrganizationRepository extends BaseRepository<Organization, String> {
