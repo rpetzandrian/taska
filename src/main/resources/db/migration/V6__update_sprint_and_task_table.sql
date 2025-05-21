@@ -1,0 +1,5 @@
+ALTER TABLE sprints
+ALTER COLUMN description TYPE TEXT;
+
+ALTER TABLE tasks
+ALTER COLUMN description TYPE TEXT;

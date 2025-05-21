@@ -18,19 +18,18 @@ public class TaskRepository extends BaseRepository<Task, String> {
     private static class TaskRowMapper implements RowMapper<Task> {
         @Override
         public Task mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Task task = new Task();
-
-            task.setId(rs.getString("id"));
-            task.setName(rs.getString("name"));
-            task.setDescription(rs.getString("description"));
-            task.setPriority(rs.getInt("priority"));
-            task.setReporter_id(rs.getString("reporter_id"));
-            task.setAssignee_id(rs.getString("assignee_id"));
-            task.setStatus(rs.getString("status"));
-            task.setStory_point(rs.getInt("story_point"));
-            task.setType(rs.getString("type"));
-
-            return task;
+            return new Task(
+                    rs.getString("id"),
+                    rs.getString("name"),
+                    rs.getString("sprint_id"),
+                    rs.getString("description"),
+                    rs.getString("status"),
+                    rs.getInt("priority"),
+                    rs.getInt("story_point"),
+                    rs.getString("reporter_id"),
+                    rs.getString("assignee_id"),
+                    rs.getString("type")
+            );
         }
     }
 }

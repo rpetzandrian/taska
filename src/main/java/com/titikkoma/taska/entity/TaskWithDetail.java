@@ -10,6 +10,29 @@ public class TaskWithDetail extends Task {
     private String assigneeName;
     private List<Log> logs;
 
+    public TaskWithDetail(
+            Task task,
+            String reporterName,
+            String assigneeName,
+            List<Log> logs
+    ) {
+        super(
+                task.getId(),
+                task.getName(),
+                task.getSprint_id(),
+                task.getDescription(),
+                task.getStatus(),
+                task.getPriority(),
+                task.getStory_point(),
+                task.getReporter_id(),
+                task.getAssignee_id(),
+                task.getType()
+        );
+        this.reporterName = reporterName;
+        this.assigneeName = assigneeName;
+        this.logs = logs;
+    }
+
     public void setReporterName(String reporterName) {
         this.reporterName = reporterName;
     }
@@ -32,22 +55,5 @@ public class TaskWithDetail extends Task {
 
     public List<Log> getLogs() {
         return logs;
-    }
-
-    public static TaskWithDetail buildTaskWithDetail(Task task, List<Log> logs, String reporterName, String assigneeName) {
-        TaskWithDetail taskWithDetail = new TaskWithDetail();
-        taskWithDetail.setId(task.getId());
-        taskWithDetail.setName(task.getName());
-        taskWithDetail.setDescription(task.getDescription());
-        taskWithDetail.setStatus(task.getStatus());
-        taskWithDetail.setStory_point(task.getStory_point());
-        taskWithDetail.setType(task.getType());
-        taskWithDetail.setPriority(task.getPriority());
-
-        taskWithDetail.setReporterName(reporterName);
-        taskWithDetail.setAssigneeName(assigneeName);
-        taskWithDetail.setLogs(logs);
-
-        return taskWithDetail;
     }
 }
