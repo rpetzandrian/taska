@@ -1,25 +1,3 @@
-//package com.titikkoma.taska;
-//
-//import com.titikkoma.taska.middleware.AuthMiddleware;
-//import org.springframework.context.annotation.Configuration;
-//import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-//import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-//
-//@Configuration
-//class Config implements WebMvcConfigurer {
-//    private final AuthMiddleware authMiddleware;
-//
-//    public Config(AuthMiddleware authMiddleware) {
-//        this.authMiddleware = authMiddleware;
-//    }
-//
-//    @Override
-//    public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(authMiddleware)
-//                .excludePathPatterns("/v1/auth/*", "/v1/logs/*", "/v1/tasks/*", "/v1/users/*");
-//    }
-//}
-
 package com.titikkoma.taska;
 
 
@@ -32,6 +10,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity(debug = true)
@@ -50,8 +33,21 @@ public class Config {
                             .anyRequest().authenticated();
                 })
                 .csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .addFilterAfter(authFilter, BasicAuthenticationFilter.class);
         return http.build();
     }
 
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOriginPatterns(List.of("http://localhost:*")); // Allow all localhost ports
+        configuration.setAllowedMethods(List.of("*")); // Allow all HTTP methods
+        configuration.setAllowedHeaders(List.of("*")); // Allow all headers
+        configuration.setAllowCredentials(true); // Allow credentials
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration); // Apply to all endpoints
+        return source;
+    }
 }
