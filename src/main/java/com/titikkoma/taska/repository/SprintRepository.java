@@ -15,6 +15,9 @@ public class SprintRepository extends BaseRepository<Sprint, String> {
         super(jdbcTemplate, "sprints", "id", new SprintRowMapper());
     }
 
+    public Sprint sprintById(){
+        //...
+    }
     private static class SprintRowMapper implements RowMapper<Sprint> {
         @Override
         public Sprint mapRow(ResultSet rs, int rowNum) throws SQLException {
