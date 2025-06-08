@@ -39,7 +39,7 @@ public class AuthService{
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid email or password");
         }
 
-        Timestamp expiredAt = new Timestamp(Instant.now().plus(3600, ChronoUnit.SECONDS).toEpochMilli());
+        Timestamp expiredAt = new Timestamp(Instant.now().plus(3600000, ChronoUnit.SECONDS).toEpochMilli());
 
         String token = UUID.randomUUID().toString();
         User updateUserPayload = new User();
@@ -53,7 +53,7 @@ public class AuthService{
         return LoginResponse.builder()
                 .token(token)
                 .expired_at(expiredAt.toString())
-                .lifetime(3600)
+                .lifetime(3600000)
                 .build();
     }
 
@@ -67,7 +67,7 @@ public class AuthService{
         String hashedPassword = BCrypt.hashpw(registerRequestBody.getPassword(), BCrypt.gensalt());
 
         String token = UUID.randomUUID().toString();
-        Timestamp expiredAt = new Timestamp(Instant.now().plus(3600, ChronoUnit.SECONDS).toEpochMilli());
+        Timestamp expiredAt = new Timestamp(Instant.now().plus(3600000, ChronoUnit.SECONDS).toEpochMilli());
 
         User user = new User();
         user.setId(UUID.randomUUID().toString());
@@ -84,7 +84,7 @@ public class AuthService{
         return LoginResponse.builder()
                 .token(token)
                 .expired_at(expiredAt.toString())
-                .lifetime(3600)
+                .lifetime(3600000)
                 .build();
     }
 }

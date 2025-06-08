@@ -18,6 +18,26 @@ public class Sprint implements BaseEntity<String> {
     private String organization_code;
     private String created_by;
 
+    public Sprint(
+            String id,
+            String name,
+            String description,
+            Timestamp start_date,
+            Timestamp end_date,
+            String status,
+            String organization_code,
+            String created_by
+    ) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.start_date = start_date;
+        this.end_date = end_date;
+        this.status = status;
+        this.organization_code = organization_code;
+        this.created_by = created_by;
+    }
+
     @Override
     public String getId() {
         return id;
