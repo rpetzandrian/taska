@@ -1,13 +1,13 @@
 package com.titikkoma.taska.controller;
 
 import com.titikkoma.taska.base.WebResponse;
+import com.titikkoma.taska.dto.CreateSprintRequestBody;
 import com.titikkoma.taska.entity.SprintWithDetail;
 import com.titikkoma.taska.model.Sprint;
 import com.titikkoma.taska.service.SprintService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.List;
 
 @RestController
@@ -24,10 +24,23 @@ public class SprintController {
         return WebResponse.<List<Sprint>>builder().data(sprint).build();
     }
 
+    @GetMapping("/v1/sprint/current")
+    public WebResponse<SprintWithDetail> findCurrentSprint() {
+        System.out.println("testing sprint");
+        SprintWithDetail sprint = this.sprintService.findCurrentSprint();
+        return WebResponse.<SprintWithDetail>builder().data(sprint).build();
+    }
+
     @GetMapping("/v1/sprint/{id}")
     public WebResponse<SprintWithDetail> findSprintById(@PathVariable String id) {
         SprintWithDetail sprint = this.sprintService.findSprintWithDetailById(id);
         return WebResponse.<SprintWithDetail>builder().data(sprint).build();
+    }
+
+    @PostMapping("/v1/sprint")
+    public WebResponse<Sprint> createSprint(@RequestBody CreateSprintRequestBody body) {
+        Sprint sprint = this.sprintService.createNewSprint(body);
+        return WebResponse.<Sprint>builder().data(sprint).build();
     }
 
 }

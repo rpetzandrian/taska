@@ -81,7 +81,6 @@ public class BaseRepository<T extends BaseEntity<ID>, ID> {
 
     public T findOneOrFail(Map<String, Object> conditions) {
         Optional<T> entity = findOne(conditions);
-        System.out.println(entity);
         if (entity.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("%s_not_found", tableName));
         }

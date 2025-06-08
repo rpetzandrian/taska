@@ -1,6 +1,8 @@
 package com.titikkoma.taska.service;
 
+import com.titikkoma.taska.base.error.BadRequestError;
 import com.titikkoma.taska.dto.CreateTaskRequestBody;
+import com.titikkoma.taska.dto.UpdateTaskRequestBody;
 import com.titikkoma.taska.entity.CustomAuthPrincipal;
 import com.titikkoma.taska.entity.TaskWithDetail;
 import com.titikkoma.taska.model.Log;
@@ -84,8 +86,6 @@ public class TaskService {
                 data.getType()
         );
 
-        System.out.println(payload);
-
         this.taskRepository.create(payload);
 
         Map<String, Object> content = new HashMap<>();
@@ -100,10 +100,31 @@ public class TaskService {
                 content
         );
 
-        System.out.println(logPayload);
-
         this.logRepository.create(logPayload);
 
         return payload;
+    }
+
+    public int updateTask(String id, UpdateTaskRequestBody data) {
+        Map<String, Object> cond = new HashMap<>();
+        cond.put("id", id);
+        Task task = this.taskRepository.findOneOrFail(cond);
+
+        CustomAuthPrincipal principal = (CustomAuthPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!task.getAssignee_id().equals(principal.getId()) && !principal.getRole().equals("admin")) {
+            throw new BadRequestError("You are not allowed to update this task");
+        }
+
+        Map<String, Object> updatePayload = new HashMap<>();
+        if (data.getName() != null) { updatePayload.put("name", data.getName()); }
+        if (data.getSprint_id() != null) { updatePayload.put("sprint_id", data.getSprint_id()); }
+        if (data.getDescription() != null) { updatePayload.put("description", data.getDescription()); }
+        if (data.getPriority() != null) { updatePayload.put("priority", data.getPriority()); }
+        if (data.getStory_point() != null) { updatePayload.put("story_point", data.getStory_point()); }
+        if (data.getAssignee_id() != null) { updatePayload.put("assignee_id", data.getAssignee_id()); }
+        if (data.getType() != null) { updatePayload.put("type", data.getType()); }
+        if (data.getStatus() != null) { updatePayload.put("status", data.getStatus()); }
+
+        return this.taskRepository.update(cond, updatePayload);
     }
 }

@@ -18,15 +18,16 @@ public class SprintRepository extends BaseRepository<Sprint, String> {
     private static class SprintRowMapper implements RowMapper<Sprint> {
         @Override
         public Sprint mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Sprint sprint = new Sprint();
-            sprint.setId(rs.getString("id"));
-            sprint.setName(rs.getString("name"));
-            sprint.setDescription(rs.getString("description"));
-            sprint.setStatus(rs.getString("status"));
-            sprint.setStart_date(rs.getTimestamp("start_date"));
-            sprint.setEnd_date(rs.getTimestamp("end_date"));
-            sprint.setCreated_by(rs.getString("created_by"));
-            sprint.setOrganization_code(rs.getString("organization_code"));
+            Sprint sprint = new Sprint(
+                    rs.getString("id"),
+                    rs.getString("name"),
+                    rs.getString("description"),
+                    rs.getTimestamp("start_date"),
+                    rs.getTimestamp("end_date"),
+                    rs.getString("status"),
+                    rs.getString("organization_code"),
+                    rs.getString("created_by")
+            );
 
             return sprint;
         }
