@@ -32,4 +32,22 @@ public class SprintRepository extends BaseRepository<Sprint, String> {
         }
     }
 
+      public void deleteById(String id, String organizationCode) {
+        String sql = "DELETE FROM sprints WHERE id = ? AND organization_code = ?";
+        jdbcTemplate.update(sql, id, organizationCode);
+    }
+
+    public void updateSprint(Sprint sprint) {
+        String sql = "UPDATE sprints SET name = ?, description = ?, start_date = ?, end_date = ?, status = ?, organization_code = ?, created_by = ? WHERE id = ?";
+        jdbcTemplate.update(sql,
+                sprint.getName(),
+                sprint.getDescription(),
+                sprint.getStart_date(),
+                sprint.getEnd_date(),
+                sprint.getStatus(),
+                sprint.getOrganization_code(),
+                sprint.getCreated_by(),
+                sprint.getId());
+    }
+
 }

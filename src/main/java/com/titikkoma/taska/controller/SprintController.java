@@ -30,4 +30,17 @@ public class SprintController {
         return WebResponse.<SprintWithDetail>builder().data(sprint).build();
     }
 
+     @DeleteMapping("/v1/sprint/{id}")
+    public WebResponse<Void> deleteSprint(@PathVariable String id) {
+        this.sprintService.deleteSprint(id);
+        return WebResponse.<Void>builder().build();
+    }
+
+     @PutMapping("/v1/sprint/{id}")
+    public WebResponse<Void> updateSprint(@PathVariable String id, @RequestBody Sprint sprint) {
+        sprint.setId(id);
+        this.sprintService.updateSprint(sprint);
+        return WebResponse.<Void>builder().build();
+    }
+
 }

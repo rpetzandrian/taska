@@ -57,4 +57,15 @@ public class SprintService {
 
         return new SprintWithDetail(sprint, user.getName(), logs);
     }
+
+    public void deleteSprint(String id) {
+        CustomAuthPrincipal customAuthPrincipal = (CustomAuthPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        this.sprintRepository.deleteById(id, customAuthPrincipal.getOrganizationCode());
+    }
+
+    public void updateSprint(Sprint sprint) {
+        CustomAuthPrincipal customAuthPrincipal = (CustomAuthPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        sprint.setOrganization_code(customAuthPrincipal.getOrganizationCode());
+        this.sprintRepository.updateSprint(sprint);
+    }
 }
