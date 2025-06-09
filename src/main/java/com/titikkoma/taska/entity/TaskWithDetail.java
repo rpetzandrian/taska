@@ -1,5 +1,6 @@
 package com.titikkoma.taska.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.titikkoma.taska.model.Log;
 import com.titikkoma.taska.model.Task;
 
@@ -37,6 +38,7 @@ public class TaskWithDetail extends Task {
         this.reporterName = reporterName;
     }
 
+    @JsonProperty("reporter_name")
     public String getReporterName() {
         return reporterName;
     }
@@ -45,6 +47,7 @@ public class TaskWithDetail extends Task {
         this.assigneeName = assigneeName;
     }
 
+    @JsonProperty("assignee_name")
     public String getAssigneeName() {
         return assigneeName;
     }

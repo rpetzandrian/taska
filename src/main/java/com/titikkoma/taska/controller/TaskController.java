@@ -2,6 +2,7 @@ package com.titikkoma.taska.controller;
 
 import com.titikkoma.taska.base.WebResponse;
 import com.titikkoma.taska.dto.CreateTaskRequestBody;
+import com.titikkoma.taska.dto.TaskRequestFilterParams;
 import com.titikkoma.taska.dto.UpdateTaskRequestBody;
 import com.titikkoma.taska.entity.TaskWithDetail;
 import com.titikkoma.taska.model.Task;
@@ -26,9 +27,12 @@ public class TaskController {
     }
 
     @GetMapping("/v1/task/list/{sprintId}")
-    public WebResponse<List<Task>> findAllTaskBySprintId(@PathVariable String sprintId) {
-        List<Task> tasks = this.taskService.findAllTaskBySprintId(sprintId);
-        return WebResponse.<List<Task>>builder().data(tasks).build();
+    public WebResponse<List<TaskWithDetail>> findAllTaskBySprintId(
+            @PathVariable String sprintId,
+            TaskRequestFilterParams query
+    ) {
+        List<TaskWithDetail> tasks = this.taskService.findAllTaskBySprintId(sprintId, query);
+        return WebResponse.<List<TaskWithDetail>>builder().data(tasks).build();
     }
 
     @GetMapping("/v1/task/{id}")

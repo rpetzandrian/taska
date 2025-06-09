@@ -44,8 +44,6 @@ public class BaseRepository<T extends BaseEntity<ID>, ID> {
             sql += " WHERE " + whereClause;
         }
 
-        System.out.println(sql);
-
         try {
             return namedJdbcTemplate.query(sql, conditions, rowMapper);
         } catch (EmptyResultDataAccessException e) {

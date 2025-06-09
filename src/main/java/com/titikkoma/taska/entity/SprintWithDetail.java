@@ -1,5 +1,6 @@
 package com.titikkoma.taska.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.titikkoma.taska.model.Log;
 import com.titikkoma.taska.model.Sprint;
 
@@ -24,6 +25,7 @@ public class SprintWithDetail extends Sprint {
         this.logs = logs;
     }
 
+    @JsonProperty("creator_name")
     public String getCreatorName() {
         return creatorName;
     }
