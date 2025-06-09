@@ -1,6 +1,7 @@
 package com.titikkoma.taska.controller;
 
 import com.titikkoma.taska.base.WebResponse;
+import com.titikkoma.taska.dto.UserListResponse;
 import com.titikkoma.taska.model.User;
 import com.titikkoma.taska.service.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,15 +20,13 @@ public class UserController {
 
     @GetMapping("/v1/users/test")
     public WebResponse<Optional<User>> findById() {
-        System.out.println("test");
         Optional<User> user =  userService.findById();
         return WebResponse.<Optional<User>>builder().data(user).build();
     }
 
     @GetMapping("/v1/users")
-    public WebResponse<List<User>> findAll() {
-        System.out.println("list");
-        List<User> users = userService.findAllUsers();
-        return WebResponse.<List<User>>builder().data(users).build();
+    public WebResponse<List<UserListResponse>> findAll() {
+        List<UserListResponse> users = userService.findAllUsers();
+        return WebResponse.<List<UserListResponse>>builder().data(users).build();
     }
 }

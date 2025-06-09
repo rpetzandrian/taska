@@ -2,6 +2,7 @@ package com.titikkoma.taska.service;
 
 import com.titikkoma.taska.base.error.BadRequestError;
 import com.titikkoma.taska.dto.CreateTaskRequestBody;
+import com.titikkoma.taska.dto.TaskRequestFilterParams;
 import com.titikkoma.taska.dto.UpdateTaskRequestBody;
 import com.titikkoma.taska.entity.CustomAuthPrincipal;
 import com.titikkoma.taska.entity.TaskWithDetail;
@@ -33,11 +34,15 @@ public class TaskService {
         this.userRepository = userRepository;
     }
 
-    public List<Task> findAllTaskBySprintId(String sprintId) {
+    public List<TaskWithDetail> findAllTaskBySprintId(String sprintId, TaskRequestFilterParams query) {
         Map<String, Object> conditions = new HashMap<>();
         conditions.put("sprint_id", sprintId);
 
-        return this.taskRepository.findAll(conditions);
+        if (query.getAssignee_id() != null) conditions.put("assignee_id", query.getAssignee_id());
+        if (query.getType() != null) conditions.put("type", query.getType());
+        if (query.getStatus() != null) conditions.put("status", query.getStatus());
+
+        return this.taskRepository.findAllWithDetails(conditions);
     }
 
     public TaskWithDetail findTaskWithDetailById(String id) {
