@@ -4,6 +4,7 @@ import com.titikkoma.taska.base.helpers.BCrypt;
 import com.titikkoma.taska.dto.LoginResponse;
 import com.titikkoma.taska.dto.RegisterRequestBody;
 import com.titikkoma.taska.model.User;
+import com.titikkoma.taska.repository.OrganizationRepository;
 import com.titikkoma.taska.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -20,9 +21,14 @@ import java.util.UUID;
 @Service
 public class AuthService{
     private UserRepository userRepository;
+    private OrganizationRepository organizationRepository;
 
-    public AuthService(UserRepository userRepository) {
+    public AuthService(
+        UserRepository userRepository,
+        OrganizationRepository organizationRepository
+    ) {
         this.userRepository = userRepository;
+        this.organizationRepository = organizationRepository;
     }
 
     public LoginResponse login(String email, String password) {
@@ -58,6 +64,10 @@ public class AuthService{
     }
 
     public LoginResponse register(RegisterRequestBody registerRequestBody) {
+        Map<String, Object> orgCond = new HashMap<>();
+        orgCond.put("code", registerRequestBody.getOrganization_code());
+        organizationRepository.findOneOrFail(orgCond);
+
         Optional<User> existing = userRepository.findByEmail(registerRequestBody.getEmail());
 
         if (existing.isPresent()) {
