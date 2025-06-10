@@ -24,9 +24,14 @@ public class SprintController {
         return WebResponse.<List<SprintWithDetail>>builder().data(sprint).build();
     }
 
+    @GetMapping("/v1/sprint/config")
+    public WebResponse<List<Sprint>> findAllSprintConfigs() {
+        List<Sprint> sprint = this.sprintService.findAllSprintConfigs();
+        return WebResponse.<List<Sprint>>builder().data(sprint).build();
+    }
+
     @GetMapping("/v1/sprint/current")
     public WebResponse<SprintWithDetail> findCurrentSprint() {
-        System.out.println("testing sprint");
         SprintWithDetail sprint = this.sprintService.findCurrentSprint();
         return WebResponse.<SprintWithDetail>builder().data(sprint).build();
     }

@@ -83,7 +83,7 @@ public class TaskService {
                 data.getName(),
                 data.getSprint_id(),
                 data.getDescription(),
-                "new",
+                "todo",
                 data.getPriority(),
                 data.getStory_point(),
                 principal.getId(),

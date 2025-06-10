@@ -46,6 +46,20 @@ public class SprintService {
         return this.sprintRepository.findAllWithDetails(params);
     }
 
+    public List<Sprint> findAllSprintConfigs() {
+        CustomAuthPrincipal customAuthPrincipal = (CustomAuthPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Map<String, Object> params = new HashMap<>();
+        List<String> status = new ArrayList<>();
+        status.add("active");
+        status.add("new");
+
+        params.put("organization_code", customAuthPrincipal.getOrganizationCode());
+        params.put("status", status);
+
+        return this.sprintRepository.findAll(params);
+    }
+
     public SprintWithDetail findSprintWithDetailById(String id) {
         CustomAuthPrincipal customAuthPrincipal = (CustomAuthPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
