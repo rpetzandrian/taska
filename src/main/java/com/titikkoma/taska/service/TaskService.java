@@ -115,10 +115,10 @@ public class TaskService {
         cond.put("id", id);
         Task task = this.taskRepository.findOneOrFail(cond);
 
-        CustomAuthPrincipal principal = (CustomAuthPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (!task.getAssignee_id().equals(principal.getId()) && !principal.getRole().equals("admin")) {
-            throw new BadRequestError("You are not allowed to update this task");
-        }
+//        CustomAuthPrincipal principal = (CustomAuthPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        if ((task.getAssignee_id() != null && !task.getAssignee_id().equals(principal.getId())) && !principal.getRole().equals("admin")) {
+//            throw new BadRequestError("You are not allowed to update this task");
+//        }
 
         Map<String, Object> updatePayload = new HashMap<>();
         if (data.getName() != null) { updatePayload.put("name", data.getName()); }
@@ -129,6 +129,8 @@ public class TaskService {
         if (data.getAssignee_id() != null) { updatePayload.put("assignee_id", data.getAssignee_id()); }
         if (data.getType() != null) { updatePayload.put("type", data.getType()); }
         if (data.getStatus() != null) { updatePayload.put("status", data.getStatus()); }
+
+        updatePayload.replaceAll((key, value) -> "".equals(value) ? null : value);
 
         return this.taskRepository.update(cond, updatePayload);
     }

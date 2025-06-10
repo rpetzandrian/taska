@@ -147,6 +147,8 @@ public class Task implements BaseEntity<String> {
         if (type != null) map.put("type", type);
         if (sprint_id != null) map.put("sprint_id", sprint_id);
 
+        map.replaceAll((key, value) -> "".equals(value) ? null : value);
+
         return map;
     }
 }

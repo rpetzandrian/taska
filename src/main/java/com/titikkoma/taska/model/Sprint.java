@@ -111,6 +111,8 @@ public class Sprint implements BaseEntity<String> {
         if (status != null) map.put("status", status);
         if (organization_code != null) map.put("organization_code", organization_code);
         if (created_by != null) map.put("created_by", created_by);
+
+        map.replaceAll((key, value) -> "".equals(value) ? null : value);
         return map;
     }
 }

@@ -36,19 +36,16 @@ public class BaseRepository<T extends BaseEntity<ID>, ID> {
     @Transactional(readOnly = true)
     public List<T> findAll(Map<String, Object> conditions) {
         String sql = String.format("SELECT * FROM %s",  tableName);
-
         List<String> whereClauses = new ArrayList<>();
         for (Map.Entry<String, Object> entry : conditions.entrySet()) {
             String key = entry.getKey();
             Object value = entry.getValue();
 
             if (value instanceof Collection<?> col) {
-                // IMPORTANT: Only add the clause if the list is not empty
                 if (!col.isEmpty()) {
                     whereClauses.add(String.format("%s IN (:%s)", key, key));
                 }
             } else {
-                // Fallback to the standard equality check
                 whereClauses.add(String.format("%s = :%s", key, key));
             }
         }
@@ -131,8 +128,6 @@ public class BaseRepository<T extends BaseEntity<ID>, ID> {
 
         String sql = String.format("UPDATE %s SET %s WHERE %s",
                 tableName, setClause, whereClause);
-
-        System.out.println(sql);
 
         Map<String, Object> params = new HashMap<>();
         params.putAll(conditions);
