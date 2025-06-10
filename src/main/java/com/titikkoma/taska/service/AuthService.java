@@ -59,6 +59,7 @@ public class AuthService{
         return LoginResponse.builder()
                 .token(token)
                 .expired_at(expiredAt.toString())
+                .role(user.get().getRole())
                 .lifetime(3600000)
                 .build();
     }
@@ -94,6 +95,40 @@ public class AuthService{
         return LoginResponse.builder()
                 .token(token)
                 .expired_at(expiredAt.toString())
+                .role("member")
+                .lifetime(3600000)
+                .build();
+    }
+
+    public LoginResponse registerAdmin(RegisterRequestBody registerRequestBody) {
+
+        Optional<User> existing = userRepository.findByEmail(registerRequestBody.getEmail());
+
+        if (existing.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already in registered");
+        }
+
+        String hashedPassword = BCrypt.hashpw(registerRequestBody.getPassword(), BCrypt.gensalt());
+
+        String token = UUID.randomUUID().toString();
+        Timestamp expiredAt = new Timestamp(Instant.now().plus(3600000, ChronoUnit.SECONDS).toEpochMilli());
+
+        User user = new User();
+        user.setId(UUID.randomUUID().toString());
+        user.setEmail(registerRequestBody.getEmail());
+        user.setPassword(hashedPassword);
+        user.setRole("admin");
+        user.setName(registerRequestBody.getName());
+        user.setOrganization_code(registerRequestBody.getOrganization_code());
+        user.setToken(token);
+        user.setExpired_at(expiredAt);
+
+        userRepository.create(user);
+
+        return LoginResponse.builder()
+                .token(token)
+                .expired_at(expiredAt.toString())
+                .role("admin")
                 .lifetime(3600000)
                 .build();
     }
