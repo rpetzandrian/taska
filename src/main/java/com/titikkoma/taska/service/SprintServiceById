@@ -1,0 +1,37 @@
+package com.titikkoma.taska.service;
+
+import com.titikkoma.taska.model.Sprint;
+import com.titikkoma.taska.model.SprintById;
+import com.titikkoma.taska.repository.SprintByIdRepository;
+import com.titikkoma.taska.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class SprintServiceById {
+
+    private final SprintByIdRepository sprintByIdRepository;
+    private final UserRepository userRepository;
+
+    @Autowired
+    public SprintServiceById(SprintByIdRepository sprintByIdRepository, UserRepository userRepository) {
+        this.sprintByIdRepository = sprintByIdRepository;
+        this.userRepository = userRepository;
+    }
+
+    // Mendapatkan Sprint dengan detail berdasarkan ID
+    public SprintById findSprintById(String id) {
+        // Ambil Sprint berdasarkan ID
+        SprintById sprintById = sprintByIdRepository.getSprintById(id);
+
+        // Ambil data user berdasarkan created_by
+        Map<String, Object> userParams = new HashMap<>();
+        userParams.put("id", sprintById.getCreated_by());
+        User user = this.userRepository.findOneOrFail(userParams);
+
+        // Set nama user di SprintById (jika diperlukan)
+        sprintById.setCreated_by(user.getName());
+
+        return sprintById;
+    }
+}
