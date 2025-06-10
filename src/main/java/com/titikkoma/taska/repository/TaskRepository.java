@@ -43,8 +43,6 @@ public class TaskRepository extends BaseRepository<Task, String> {
     private static class TaskWithDetailRowMapper implements RowMapper<TaskWithDetail> {
         @Override
         public TaskWithDetail mapRow(ResultSet rs, int rowNum) throws SQLException {
-            System.out.println("called");
-            System.out.println(rs.getString("id"));
             Task task =  new Task(
                     rs.getString("id"),
                     rs.getString("name"),

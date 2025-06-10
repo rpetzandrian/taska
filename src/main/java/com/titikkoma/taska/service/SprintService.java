@@ -34,13 +34,13 @@ public class SprintService {
         this.userRepository = userRepository;
     }
 
-    public List<Sprint> findAllSprints() {
+    public List<SprintWithDetail> findAllSprints() {
         CustomAuthPrincipal customAuthPrincipal = (CustomAuthPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         Map<String, Object> params = new HashMap<>();
         params.put("organization_code", customAuthPrincipal.getOrganizationCode());
 
-        return this.sprintRepository.findAll(params);
+        return this.sprintRepository.findAllWithDetails(params);
     }
 
     public SprintWithDetail findSprintWithDetailById(String id) {
@@ -72,6 +72,11 @@ public class SprintService {
 
         Timestamp startDate = DateFormatter.formatDateToTimestamp(data.getStart_date(), "dd-MM-yyyy");
         Timestamp endDate = DateFormatter.formatDateToTimestamp(data.getEnd_date(), "dd-MM-yyyy");
+
+        if (startDate.after(endDate)) {
+            throw new BadRequestError("Start date and end date must be before end date");
+        }
+
         assert principal != null;
         Sprint sprint = new Sprint(
                 UUID.randomUUID().toString(),

@@ -19,9 +19,9 @@ public class SprintController {
     }
 
     @GetMapping("/v1/sprint/list")
-    public WebResponse<List<Sprint>> findAllSprints() {
-        List<Sprint> sprint = this.sprintService.findAllSprints();
-        return WebResponse.<List<Sprint>>builder().data(sprint).build();
+    public WebResponse<List<SprintWithDetail>> findAllSprints() {
+        List<SprintWithDetail> sprint = this.sprintService.findAllSprints();
+        return WebResponse.<List<SprintWithDetail>>builder().data(sprint).build();
     }
 
     @GetMapping("/v1/sprint/current")
