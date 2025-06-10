@@ -23,6 +23,7 @@ public class OrganizationRepository extends BaseRepository<Organization, String>
             org.setId(rs.getString("id"));
             org.setCode(rs.getString("code"));
             org.setName(rs.getString("name"));
+            org.setDescription(rs.getString("description"));
             return org;
         }
     }

@@ -32,4 +32,12 @@ public class AuthController {
         LoginResponse resp = authService.register(request);
         return WebResponse.<LoginResponse>builder().data(resp).build();
     }
+
+    @PostMapping(
+            path = "/v1/auth/register/admin"
+    )
+    public WebResponse<LoginResponse> registerAdmin(@RequestBody RegisterRequestBody request) {
+        LoginResponse resp = authService.registerAdmin(request);
+        return WebResponse.<LoginResponse>builder().data(resp).build();
+    }
 }

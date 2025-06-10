@@ -11,8 +11,11 @@ import com.titikkoma.taska.model.User;
 import com.titikkoma.taska.repository.LogRepository;
 import com.titikkoma.taska.repository.SprintRepository;
 import com.titikkoma.taska.repository.UserRepository;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -67,7 +70,7 @@ public class SprintService {
     public Sprint createNewSprint(CreateSprintRequestBody data) {
         CustomAuthPrincipal principal = (CustomAuthPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal != null && !principal.getRole().equals("admin")) {
-            throw new BadRequestError("Only admins can create sprints");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only admins can create sprints");
         }
 
         Timestamp startDate = DateFormatter.formatDateToTimestamp(data.getStart_date(), "dd-MM-yyyy");

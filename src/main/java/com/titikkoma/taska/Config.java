@@ -29,6 +29,7 @@ public class Config {
                 .authorizeHttpRequests(request -> {
                     request
                             .requestMatchers(HttpMethod.POST, "/v1/auth/register").permitAll()
+                            .requestMatchers(HttpMethod.POST , "/v1/auth/register/admin").permitAll()
                             .requestMatchers(HttpMethod.POST, "/v1/auth/login").permitAll()
                             .anyRequest().authenticated();
                 })
