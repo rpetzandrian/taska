@@ -84,7 +84,7 @@ public class SprintService {
     public Sprint createNewSprint(CreateSprintRequestBody data) {
         CustomAuthPrincipal principal = (CustomAuthPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal != null && !principal.getRole().equals("admin")) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only admins can create sprints");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Only admins can create sprints");
         }
 
         Timestamp startDate = DateFormatter.formatDateToTimestamp(data.getStart_date(), "dd-MM-yyyy");
