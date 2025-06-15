@@ -2,7 +2,6 @@ package com.titikkoma.taska.repository;
 
 import com.titikkoma.taska.base.BaseRepository;
 import com.titikkoma.taska.entity.TaskWithDetail;
-import com.titikkoma.taska.model.Log;
 import com.titikkoma.taska.model.Task;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;

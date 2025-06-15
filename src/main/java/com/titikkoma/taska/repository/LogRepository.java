@@ -6,12 +6,9 @@ import com.titikkoma.taska.base.BaseRepository;
 import com.titikkoma.taska.model.Log;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.SqlParameterValue;
 import org.springframework.stereotype.Repository;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Map;
 
 @Repository
 public class LogRepository extends BaseRepository<Log, String> {

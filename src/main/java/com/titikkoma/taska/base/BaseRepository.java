@@ -143,25 +143,10 @@ public class BaseRepository<T extends BaseEntity<ID>, ID> {
         return namedJdbcTemplate.update(sql, conditions);
     }
 
-//    @Transactional
-//    public T upsert(Map<String, Object> searchConditions, T newEntity) {
-//        return findOne(searchConditions)
-//                .map(existing -> {
-//                    update(searchConditions, newEntity.toUpdateMap());
-//                    return existing;
-//                })
-//                .orElseGet(() -> create(newEntity));
-//    }
-
-
     private String buildWhereClause(Map<String, Object> conditions) {
         return conditions.keySet().stream()
                 .map(o -> String.format("%s = :%s", o, o))
                 .collect(Collectors.joining(" AND "));
-    }
-
-    private String camelToSnakeCase(String str) {
-        return str.replaceAll("([a-z])([A-Z])", "$1_$2").toLowerCase();
     }
 }
 

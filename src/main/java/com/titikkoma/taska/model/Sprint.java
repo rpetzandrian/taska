@@ -3,7 +3,6 @@ package com.titikkoma.taska.model;
 import com.titikkoma.taska.base.BaseEntity;
 
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;

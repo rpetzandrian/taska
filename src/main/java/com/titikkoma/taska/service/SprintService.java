@@ -214,6 +214,49 @@ public class SprintService {
         return existingSprint;
     }
 
+    public void deleteSprint(String id) {
+        // 1. Dapatkan informasi user yang sedang login dan periksa rolenya
+        CustomAuthPrincipal principal = (CustomAuthPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal == null || !principal.getRole().equals("admin")) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only admins can delete sprints");
+        }
+
+        // 2. Siapkan kondisi untuk klausa WHERE (untuk mencari dan menghapus)
+        Map<String, Object> conditions = new HashMap<>();
+        conditions.put("id", id);
+        conditions.put("organization_code", principal.getOrganizationCode());
+
+        // 3. Ambil data sprint terlebih dahulu untuk validasi dan logging
+        Sprint sprintToDelete = this.sprintRepository.findOneOrFail(conditions);
+
+        // 4. Validasi penting: jangan izinkan sprint aktif untuk dihapus
+        if ("active".equalsIgnoreCase(sprintToDelete.getStatus())) {
+            throw new BadRequestError("Active sprints cannot be deleted. Please complete or change its status first.");
+        }
+
+        // 5. Panggil repository untuk menghapus sprint
+        int affectedRows = this.sprintRepository.delete(conditions);
+
+        // 6. Jika penghapusan berhasil (ada baris yang terpengaruh), buat log
+        if (affectedRows > 0) {
+            Map<String, Object> logContent = new HashMap<>();
+            logContent.put("deleter_id", principal.getId());
+            logContent.put("deleter_name", principal.getName());
+            // Menyimpan nama sprint yang dihapus akan sangat membantu saat audit log
+            logContent.put("deleted_sprint_name", sprintToDelete.getName());
+
+            Log logPayload = new Log(
+                    UUID.randomUUID().toString(),
+                    "delete",
+                    new Timestamp(Instant.now().toEpochMilli()),
+                    "sprint",
+                    id, // ID dari sprint yang dihapus
+                    logContent
+            );
+            this.logRepository.create(logPayload);
+        }
+    }
+
     public SprintWithDetail findCurrentSprint() {
         CustomAuthPrincipal customAuthPrincipal = (CustomAuthPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 

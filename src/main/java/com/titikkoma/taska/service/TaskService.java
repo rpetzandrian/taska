@@ -111,12 +111,6 @@ public class TaskService {
     public int updateTask(String id, UpdateTaskRequestBody data) {
         Map<String, Object> cond = new HashMap<>();
         cond.put("id", id);
-        Task task = this.taskRepository.findOneOrFail(cond);
-
-//        CustomAuthPrincipal principal = (CustomAuthPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        if ((task.getAssignee_id() != null && !task.getAssignee_id().equals(principal.getId())) && !principal.getRole().equals("admin")) {
-//            throw new BadRequestError("You are not allowed to update this task");
-//        }
 
         Map<String, Object> updatePayload = new HashMap<>();
         if (data.getName() != null) { updatePayload.put("name", data.getName()); }
