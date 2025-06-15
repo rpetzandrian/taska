@@ -1,6 +1,5 @@
 package com.titikkoma.taska.service;
 
-import com.titikkoma.taska.base.error.BadRequestError;
 import com.titikkoma.taska.dto.CreateTaskRequestBody;
 import com.titikkoma.taska.dto.TaskRequestFilterParams;
 import com.titikkoma.taska.dto.UpdateTaskRequestBody;
@@ -19,7 +18,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Service

@@ -6,8 +6,6 @@ import com.titikkoma.taska.model.User;
 import com.titikkoma.taska.repository.UserRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
-import java.security.Principal;
 import java.util.*;
 
 @Service

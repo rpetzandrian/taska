@@ -2,10 +2,8 @@ package com.titikkoma.taska.repository;
 
 import com.titikkoma.taska.base.BaseRepository;
 import com.titikkoma.taska.entity.SprintWithDetail;
-import com.titikkoma.taska.entity.TaskWithDetail;
 import com.titikkoma.taska.model.Log;
 import com.titikkoma.taska.model.Sprint;
-import com.titikkoma.taska.model.Task;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

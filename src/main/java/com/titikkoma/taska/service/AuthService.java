@@ -45,7 +45,7 @@ public class AuthService{
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid email or password");
         }
 
-        Timestamp expiredAt = new Timestamp(Instant.now().plus(3600000, ChronoUnit.SECONDS).toEpochMilli());
+        Timestamp expiredAt = new Timestamp(Instant.now().plus(7200000, ChronoUnit.SECONDS).toEpochMilli());
 
         String token = UUID.randomUUID().toString();
         User updateUserPayload = new User();
@@ -60,7 +60,7 @@ public class AuthService{
                 .token(token)
                 .expired_at(expiredAt.toString())
                 .role(user.get().getRole())
-                .lifetime(3600000)
+                .lifetime(7200000)
                 .build();
     }
 

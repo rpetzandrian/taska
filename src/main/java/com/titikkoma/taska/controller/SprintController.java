@@ -2,6 +2,7 @@ package com.titikkoma.taska.controller;
 
 import com.titikkoma.taska.base.WebResponse;
 import com.titikkoma.taska.dto.CreateSprintRequestBody;
+import com.titikkoma.taska.dto.UpdateSprintRequestBody;
 import com.titikkoma.taska.entity.SprintWithDetail;
 import com.titikkoma.taska.model.Sprint;
 import com.titikkoma.taska.service.SprintService;
@@ -45,6 +46,11 @@ public class SprintController {
     @PostMapping("/v1/sprint")
     public WebResponse<Sprint> createSprint(@RequestBody CreateSprintRequestBody body) {
         Sprint sprint = this.sprintService.createNewSprint(body);
+        return WebResponse.<Sprint>builder().data(sprint).build();
+    }
+    @PutMapping("/v1/sprint/update/{id}")
+    public WebResponse<Sprint> updateSprint(@PathVariable String id , @RequestBody UpdateSprintRequestBody body){
+        Sprint sprint = this.sprintService.updateSprint(id, body);
         return WebResponse.<Sprint>builder().data(sprint).build();
     }
 
