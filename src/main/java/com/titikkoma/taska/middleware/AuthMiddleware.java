@@ -1,5 +1,6 @@
 package com.titikkoma.taska.middleware;
 
+import com.titikkoma.taska.base.error.UnauthorizeError;
 import com.titikkoma.taska.model.User;
 import com.titikkoma.taska.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,23 +27,21 @@ public class AuthMiddleware implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ResponseStatusException {
         String token = request.getHeader("Authorization");
         if (token == null || token.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
+            throw new UnauthorizeError("Required Authorization header is missing");
         }
-
-        System.out.println(token);
 
         Map<String, Object> cond = new HashMap<>();
         cond.put("token", token);
         User user = userRepository.findOne(cond)
-                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized"));
+                        .orElseThrow(() -> new UnauthorizeError("User not found"));
 
         if (!user.getToken().equals(token)) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
+            throw new UnauthorizeError("Token does not match");
         }
 
         Instant now = Instant.now();
         if (user.getExpired_at().toInstant().toEpochMilli() < now.toEpochMilli()) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
+            throw new UnauthorizeError("Token expired");
         }
 
         return true;  // Allow the request to proceed
