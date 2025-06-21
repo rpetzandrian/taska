@@ -17,6 +17,7 @@ public class Task implements BaseEntity<String> {
     private String reporter_id;
     private String assignee_id;
     private String type;
+    private String code;
 
     public Task(
             String id,
@@ -28,7 +29,8 @@ public class Task implements BaseEntity<String> {
             Integer story_point,
             String reporter_id,
             String assignee_id,
-            String type
+            String type,
+            String code
     ) {
         if (id == null) {
             this.id = UUID.randomUUID().toString();
@@ -45,6 +47,7 @@ public class Task implements BaseEntity<String> {
         this.reporter_id = reporter_id;
         this.assignee_id = assignee_id;
         this.type = type;
+        this.code = code;
     }
 
     @Override
@@ -129,6 +132,10 @@ public class Task implements BaseEntity<String> {
         this.sprint_id = sprint_id;
     }
 
+    public String getCode() { return code; }
+
+    public void setCode(String code) { this.code = code; }
+
     @Override
     public Map<String, Object> toInsertMap() {
         Map<String, Object> map = new HashMap<>();
@@ -146,6 +153,7 @@ public class Task implements BaseEntity<String> {
         if (assignee_id != null) map.put("assignee_id", assignee_id);
         if (type != null) map.put("type", type);
         if (sprint_id != null) map.put("sprint_id", sprint_id);
+        if (code != null) map.put("code", code);
 
         map.replaceAll((key, value) -> "".equals(value) ? null : value);
 

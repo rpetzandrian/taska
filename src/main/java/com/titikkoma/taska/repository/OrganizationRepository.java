@@ -2,6 +2,8 @@ package com.titikkoma.taska.repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -24,7 +26,26 @@ public class OrganizationRepository extends BaseRepository<Organization, String>
             org.setCode(rs.getString("code"));
             org.setName(rs.getString("name"));
             org.setDescription(rs.getString("description"));
+            org.setCounter(rs.getInt("counter"));
             return org;
         }
+    }
+
+    public void updateCounter(String code, Integer counter) {
+        Map<String, Object> cond = new HashMap<>();
+        cond.put("code", code);
+
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("counter", counter);
+
+        String whereClause = this.buildWhereClause(cond);
+        String sql = String.format("UPDATE %s SET counter = :counter WHERE %s",
+                tableName, whereClause);
+
+        Map<String, Object> params = new HashMap<>();
+        params.putAll(cond);
+        params.putAll(updates);
+
+        this.namedJdbcTemplate.update(sql, params);
     }
 }

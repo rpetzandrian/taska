@@ -154,7 +154,7 @@ public class BaseRepository<T extends BaseEntity<ID>, ID> {
 //    }
 
 
-    private String buildWhereClause(Map<String, Object> conditions) {
+    protected String buildWhereClause(Map<String, Object> conditions) {
         return conditions.keySet().stream()
                 .map(o -> String.format("%s = :%s", o, o))
                 .collect(Collectors.joining(" AND "));

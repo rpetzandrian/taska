@@ -22,7 +22,6 @@ public class OrganizationController {
     }
     @GetMapping
     public WebResponse<List<Organization>> findAll(){
-        System.out.println("organization list");
         List<Organization> results = service.findAllOrganizations();
         return WebResponse.<List<Organization>>builder().data(results).build();
     }

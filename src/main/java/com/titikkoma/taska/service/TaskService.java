@@ -7,9 +7,11 @@ import com.titikkoma.taska.dto.UpdateTaskRequestBody;
 import com.titikkoma.taska.entity.CustomAuthPrincipal;
 import com.titikkoma.taska.entity.TaskWithDetail;
 import com.titikkoma.taska.model.Log;
+import com.titikkoma.taska.model.Organization;
 import com.titikkoma.taska.model.Task;
 import com.titikkoma.taska.model.User;
 import com.titikkoma.taska.repository.LogRepository;
+import com.titikkoma.taska.repository.OrganizationRepository;
 import com.titikkoma.taska.repository.TaskRepository;
 import com.titikkoma.taska.repository.UserRepository;
 import org.springframework.http.HttpStatus;
@@ -27,11 +29,13 @@ public class TaskService {
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
     private final LogRepository logRepository;
+    private final OrganizationRepository organizationRepository;
 
-    public TaskService(TaskRepository taskRepository, UserRepository userRepository, LogRepository logRepository) {
+    public TaskService(TaskRepository taskRepository, UserRepository userRepository, LogRepository logRepository, OrganizationRepository organizationRepository) {
         this.taskRepository = taskRepository;
         this.logRepository = logRepository;
         this.userRepository = userRepository;
+        this.organizationRepository = organizationRepository;
     }
 
     public List<TaskWithDetail> findAllTaskBySprintId(String sprintId, TaskRequestFilterParams query) {
@@ -78,6 +82,11 @@ public class TaskService {
     public Task createNewTask(CreateTaskRequestBody data) {
         CustomAuthPrincipal principal = (CustomAuthPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
+        Map<String, Object> orgCond = new HashMap<>();
+        orgCond.put("code", principal.getOrganizationCode());
+        Organization org = organizationRepository.findOneOrFail(orgCond);
+
+        Integer counter = org.getCounter() + 1;
         Task payload = new Task(
                 UUID.randomUUID().toString(),
                 data.getName(),
@@ -88,10 +97,12 @@ public class TaskService {
                 data.getStory_point(),
                 principal.getId(),
                 data.getAssignee_id(),
-                data.getType()
+                data.getType(),
+                org.getCode() + "-" + counter
         );
 
         this.taskRepository.create(payload);
+        this.organizationRepository.updateCounter(org.getId(), counter);
 
         Map<String, Object> content = new HashMap<>();
         content.put("creator_id", principal.getId());
@@ -115,10 +126,7 @@ public class TaskService {
         cond.put("id", id);
         Task task = this.taskRepository.findOneOrFail(cond);
 
-//        CustomAuthPrincipal principal = (CustomAuthPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        if ((task.getAssignee_id() != null && !task.getAssignee_id().equals(principal.getId())) && !principal.getRole().equals("admin")) {
-//            throw new BadRequestError("You are not allowed to update this task");
-//        }
+        CustomAuthPrincipal principal = (CustomAuthPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         Map<String, Object> updatePayload = new HashMap<>();
         if (data.getName() != null) { updatePayload.put("name", data.getName()); }
@@ -132,6 +140,29 @@ public class TaskService {
 
         updatePayload.replaceAll((key, value) -> "".equals(value) ? null : value);
 
-        return this.taskRepository.update(cond, updatePayload);
+        Integer rows = this.taskRepository.update(cond, updatePayload);
+
+        Map<String, Object> content = new HashMap<>();
+        content.put("creator_id", principal.getId());
+        content.put("creator_name", principal.getName());
+        content.put("payload", updatePayload);
+
+        if (!data.getStatus().equals(task.getStatus())) {
+            content.put("old_status", task.getStatus());
+            content.put("new_status", task.getStatus());
+        }
+
+        Log logPayload = new Log(
+                UUID.randomUUID().toString(),
+                "update",
+                new Timestamp(Instant.now().toEpochMilli()),
+                "task",
+                task.getId(),
+                content
+        );
+
+        this.logRepository.create(logPayload);
+
+        return rows;
     }
 }

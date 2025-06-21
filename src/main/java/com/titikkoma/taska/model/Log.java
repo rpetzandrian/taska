@@ -17,7 +17,6 @@ public class Log implements BaseEntity<String> {
     private Timestamp created_at;
     private String type;
     private String reference_id;
-
     private Object content;
 
     public Log(

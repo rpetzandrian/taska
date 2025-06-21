@@ -11,6 +11,7 @@ public class Organization implements BaseEntity<String> {
     private String code;
     private String name;
     private String description;
+    private Integer counter;
 
     @Override
     public String getId() {
@@ -46,6 +47,10 @@ public class Organization implements BaseEntity<String> {
         this.description = description;
     }
 
+    public Integer getCounter() { return counter; }
+
+    public void setCounter(Integer counter) { this.counter = counter; }
+
     @Override
     public Map<String, Object> toInsertMap() {
         Map<String, Object> map = new HashMap<>();
@@ -55,6 +60,8 @@ public class Organization implements BaseEntity<String> {
         map.put("id", id);
         if (code != null) map.put("code", code);
         if (name != null) map.put("name", name);
+        if (description != null) map.put("description", description);
+        if (counter != null) map.put("counter", counter);
         return map;
     }
 }

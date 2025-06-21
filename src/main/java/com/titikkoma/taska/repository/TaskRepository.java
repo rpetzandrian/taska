@@ -2,7 +2,6 @@ package com.titikkoma.taska.repository;
 
 import com.titikkoma.taska.base.BaseRepository;
 import com.titikkoma.taska.entity.TaskWithDetail;
-import com.titikkoma.taska.model.Log;
 import com.titikkoma.taska.model.Task;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -35,7 +34,8 @@ public class TaskRepository extends BaseRepository<Task, String> {
                     rs.getInt("story_point"),
                     rs.getString("reporter_id"),
                     rs.getString("assignee_id"),
-                    rs.getString("type")
+                    rs.getString("type"),
+                    rs.getString("code")
             );
         }
     }
@@ -53,7 +53,8 @@ public class TaskRepository extends BaseRepository<Task, String> {
                     rs.getInt("story_point"),
                     rs.getString("reporter_id"),
                     rs.getString("assignee_id"),
-                    rs.getString("type")
+                    rs.getString("type"),
+                    rs.getString("code")
             );
 
             return new TaskWithDetail(

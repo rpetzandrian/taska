@@ -27,7 +27,8 @@ public class TaskWithDetail extends Task {
                 task.getStory_point(),
                 task.getReporter_id(),
                 task.getAssignee_id(),
-                task.getType()
+                task.getType(),
+                task.getCode()
         );
         this.reporterName = reporterName;
         this.assigneeName = assigneeName;
