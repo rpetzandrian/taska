@@ -2,6 +2,8 @@ package com.titikkoma.taska.controller;
 
 import java.util.List;
 
+import com.titikkoma.taska.entity.CustomAuthPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,16 +22,27 @@ public class OrganizationController {
     public OrganizationController(OrganizationService service){
         this.service = service;
     }
+
     @GetMapping
     public WebResponse<List<Organization>> findAll(){
         List<Organization> results = service.findAllOrganizations();
         return WebResponse.<List<Organization>>builder().data(results).build();
     }
+
+    @GetMapping("/me")
+    public WebResponse<Organization> me() {
+        CustomAuthPrincipal principal = (CustomAuthPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Organization organization = service.findByCode(principal.getOrganizationCode());
+        return WebResponse.<Organization>builder().data(organization).build();
+    }
+
     @GetMapping("/{id}")
     public WebResponse<Organization> findById(@PathVariable String id) {
         Organization organization = service.findById(id);
         return WebResponse.<Organization>builder().data(organization).build();
     }
+
     @PostMapping
     public WebResponse<Organization> create(@RequestBody Organization organization) {
         Organization created = service.createOrganization(organization);
