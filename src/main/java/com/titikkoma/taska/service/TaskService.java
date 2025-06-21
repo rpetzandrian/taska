@@ -120,6 +120,10 @@ public class TaskService {
     }
 
     public int updateTask(String id, UpdateTaskRequestBody data) {
+        CustomAuthPrincipal principal = (CustomAuthPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal == null || !principal.getRole().equals("admin")) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only admins can delete sprints");
+        }
         Map<String, Object> cond = new HashMap<>();
         cond.put("id", id);
         Task task = this.taskRepository.findOneOrFail(cond);
@@ -162,5 +166,52 @@ public class TaskService {
         this.logRepository.create(logPayload);
 
         return rows;
+    }
+    public void deleteTask(String id) {
+        // 1. Dapatkan informasi user yang sedang login
+        CustomAuthPrincipal principal = (CustomAuthPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal == null) {
+            // Seharusnya tidak terjadi jika security config benar, tapi ini adalah penjagaan
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not authenticated.");
+        }
+
+        // 2. Ambil data task dari repository untuk validasi
+        // Menggunakan findById karena findOneOrFail tidak ada di TaskRepository Anda
+        Optional<Task> taskOptional = this.taskRepository.findById(id);
+        if (taskOptional.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Task with id " + id + " not found.");
+        }
+        Task taskToDelete = taskOptional.get();
+
+        // 3. Otorisasi: Pastikan pengguna yang login adalah pembuat task (reporter)
+        if (!taskToDelete.getReporter_id().equals(principal.getId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not authorized to delete this task.");
+        }
+
+        // 4. Siapkan kondisi untuk klausa WHERE pada query DELETE
+        Map<String, Object> conditions = new HashMap<>();
+        conditions.put("id", id);
+
+        // 5. Panggil repository untuk menghapus task
+        int affectedRows = this.taskRepository.delete(conditions);
+
+        // 6. Jika penghapusan berhasil, buat log
+        if (affectedRows > 0) {
+            Map<String, Object> logContent = new HashMap<>();
+            logContent.put("deleter_id", principal.getId());
+            logContent.put("deleter_name", principal.getName());
+            // Menyimpan nama task yang dihapus sangat berguna untuk audit
+            logContent.put("deleted_task_name", taskToDelete.getName());
+
+            Log logPayload = new Log(
+                    UUID.randomUUID().toString(),
+                    "delete", // Aksi adalah 'delete'
+                    new Timestamp(Instant.now().toEpochMilli()),
+                    "task",   // Tipe referensi adalah 'task'
+                    id,       // ID dari task yang dihapus
+                    logContent
+            );
+            this.logRepository.create(logPayload);
+        }
     }
 }

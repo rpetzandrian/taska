@@ -46,4 +46,11 @@ public class TaskController {
         int res = this.taskService.updateTask(id, data);
         return WebResponse.<Integer>builder().data(res).build();
     }
+    @DeleteMapping("/v1/task/delete/{id}")
+    public WebResponse<String> deleteSprint(@PathVariable String id) {
+        this.taskService.deleteTask(id);
+        return WebResponse.<String>builder()
+                .data("Task has been successfully deleted.")
+                .build();
+    }
 }
