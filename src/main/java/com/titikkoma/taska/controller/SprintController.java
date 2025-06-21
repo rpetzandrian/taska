@@ -2,12 +2,11 @@ package com.titikkoma.taska.controller;
 
 import com.titikkoma.taska.base.WebResponse;
 import com.titikkoma.taska.dto.CreateSprintRequestBody;
+import com.titikkoma.taska.dto.UpdateSprintRequestBody;
 import com.titikkoma.taska.entity.SprintWithDetail;
 import com.titikkoma.taska.model.Sprint;
 import com.titikkoma.taska.service.SprintService;
 import org.springframework.web.bind.annotation.*;
-
-import java.text.ParseException;
 import java.util.List;
 
 @RestController
@@ -48,4 +47,17 @@ public class SprintController {
         return WebResponse.<Sprint>builder().data(sprint).build();
     }
 
+    @PutMapping("/v1/sprint/update/{id}")
+    public WebResponse<Sprint> updateSprint(@PathVariable String id, @RequestBody UpdateSprintRequestBody body) {
+        Sprint sprint = this.sprintService.updateSprint(id, body);
+        return WebResponse.<Sprint>builder().data(sprint).build();
+    }
+
+    @DeleteMapping("/v1/sprint/delete/{id}")
+    public WebResponse<String> deleteSprint(@PathVariable String id) {
+        sprintService.deleteSprint(id);
+        return WebResponse.<String>builder()
+                .data("Sprint has been successfully deleted.")
+                .build();
+    }
 }

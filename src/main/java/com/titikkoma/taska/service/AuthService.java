@@ -101,6 +101,9 @@ public class AuthService{
     }
 
     public LoginResponse registerAdmin(RegisterRequestBody registerRequestBody) {
+        Map<String, Object> orgCond = new HashMap<>();
+        orgCond.put("code", registerRequestBody.getOrganization_code());
+        organizationRepository.findOneOrFail(orgCond);
 
         Optional<User> existing = userRepository.findByEmail(registerRequestBody.getEmail());
 
