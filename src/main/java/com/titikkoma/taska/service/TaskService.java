@@ -121,14 +121,10 @@ public class TaskService {
 
     public int updateTask(String id, UpdateTaskRequestBody data) {
         CustomAuthPrincipal principal = (CustomAuthPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal == null || !principal.getRole().equals("admin")) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only admins can delete sprints");
-        }
+        
         Map<String, Object> cond = new HashMap<>();
         cond.put("id", id);
         Task task = this.taskRepository.findOneOrFail(cond);
-
-        CustomAuthPrincipal principal = (CustomAuthPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         Map<String, Object> updatePayload = new HashMap<>();
         if (data.getName() != null) { updatePayload.put("name", data.getName()); }
